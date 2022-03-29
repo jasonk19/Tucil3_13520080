@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
   public static int size = 0;
@@ -34,21 +35,27 @@ public class Main {
   }
 
   public static void main(String[] args) {
+    Scanner input = new Scanner(System.in);
+
     int[][] matrix = null;
+    int[][] solution = null;
+    
+    // System.out.print("Enter puzzle file name to test (*.txt): ");
+    // String filename = input.nextLine();
+
     try {
-      matrix = readMatrix("noSolution.txt");
+      matrix = readMatrix("../test/test.txt");
+      solution = readMatrix("solution.txt");
     } catch (IOException e) {
       System.out.println("Error: " + e.getMessage());
     }
 
-    Solver puzzle = new Solver(matrix, size);
-
-    puzzle.printInfo();
-    puzzle.printMoves();
+    Solver puzzle = new Solver(matrix, solution, size);
 
     if (puzzle.isGoalReachable()) {
       // Print the Solution
       System.out.println("Puzzle tersebut memiliki solusi");
+      puzzle.Solve();
     } else {
       // No Solution
       System.out.println("Puzzle tersebut tidak memiliki solusi");

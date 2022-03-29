@@ -1,17 +1,26 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class Solver {
   private int[][] matrix;
+  private int[][] solution;
   private int size;
+  private static PriorityQueue<Node> antrian = new PriorityQueue<Node>(new NodeComparator());
+  private static List<String> moves = new ArrayList<String>();
 
-  public Solver(int[][] matrix, int size) {
+  public Solver(int[][] matrix, int[][] solution, int size) {
     this.matrix = matrix;
+    this.solution = solution;
     this.size = size;
   }
 
   public int Elmt(int i, int j) {
-    return matrix[i][j];
+    return this.matrix[i][j];
+  }
+
+  public int Sol(int i, int j) {
+    return this.solution[i][j];
   }
 
   public int getEmptyRow() {
@@ -36,20 +45,17 @@ public class Solver {
     return -999;
   }
 
-  public void printInfo() {
+  public void printInfo(int[][] matrix) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == -1) {
+        if (matrix[i][j] == -1) {
           System.out.print("  ");
         } else {
-          System.out.print(Elmt(i, j) + " ");
+          System.out.print(matrix[i][j] + " ");
         }
       }
       System.out.println();
     }
-
-    System.out.println("Row: " + size);
-    System.out.println("Column: " + size);
   }
 
   public void printMoves() {
@@ -153,44 +159,44 @@ public class Solver {
   public String[] getPossibleMoves() {
     List<String> list = new ArrayList<String>();
     String up = "up";
+    String right = "right";
     String down = "down";
     String left = "left";
-    String right = "right";
     int row = getEmptyRow();
     int col = getEmptyCol();
 
     if (row == 0 && col == 0) {
-      list.add(down);
       list.add(right);
-    } else if (row == 0 && col == size) {
+      list.add(down);
+    } else if (row == 0 && col == size - 1) {
       list.add(down);
       list.add(left);
-    } else if (row == size && col == 0) {
+    } else if (row == size - 1 && col == 0) {
       list.add(up);
       list.add(right);
-    } else if (row == size && col == size) {
+    } else if (row == size - 1 && col == size - 1) {
       list.add(up);
       list.add(left);
     } else if (row == 0 && col > 0 && col < size) {
+      list.add(right);
       list.add(down);
       list.add(left);
-      list.add(right);
     } else if (col == 0 && row > 0 && row < size) {
       list.add(up);
       list.add(right);
       list.add(down);
-    } else if (row == size && col > 0 && col < size) {
+    } else if (row == size - 1 && col > 0 && col < size) {
       list.add(up);
-      list.add(left);
       list.add(right);
-    } else if (col == size && row > 0 && row < size) {
-      list.add(up);
       list.add(left);
+    } else if (col == size - 1 && row > 0 && row < size) {
+      list.add(up);
       list.add(down);
+      list.add(left);
     } else {
       list.add(up);
-      list.add(down);
       list.add(right);
+      list.add(down);
       list.add(left);
     }
 
@@ -202,4 +208,106 @@ public class Solver {
     return arrayOfMoves;
   }
 
+  public int notInPositionCount() {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (Elmt(i, j) != Sol(i, j)) {
+          count++;
+        }
+      }
+    }
+
+    return count;
+  }
+
+  public int[][] copyMatrix(int[][] inputMat) {
+    int[][] newMatrix = new int[size][size];
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        newMatrix[i][j] = inputMat[i][j];
+      }
+    }
+
+    return newMatrix;
+  }
+
+  public void swapEmpty(int rowSrc, int colSrc, int rowDest, int colDest) {
+    int temp = this.matrix[rowSrc][colSrc];
+    this.matrix[rowSrc][colSrc] = this.matrix[rowDest][colDest];
+    this.matrix[rowDest][colDest] = temp;
+  }
+
+  public void move(String command) {
+    int rowEmpty = getEmptyRow();
+    int colEmpty = getEmptyCol();
+    if (command == "up") {
+      swapEmpty(rowEmpty, colEmpty, rowEmpty - 1, colEmpty);
+    } else if (command == "down") {
+      swapEmpty(rowEmpty, colEmpty, rowEmpty + 1, colEmpty);
+    } else if (command == "right") {
+      swapEmpty(rowEmpty, colEmpty, rowEmpty, colEmpty + 1);
+    } else if (command == "left") {
+      swapEmpty(rowEmpty, colEmpty, rowEmpty, colEmpty - 1);
+    }
+  }
+
+  public int countCost(int[][] inputMat, int depth) {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (inputMat[i][j] != -1) {
+          if (inputMat[i][j] != this.solution[i][j]) {
+            count++;
+          }
+        }
+      }
+    }
+    return count + depth;
+  }
+
+  public boolean notSolution(int[][] matrix) {
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (matrix[i][j] != solution[i][j]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  // Main Solving Method
+  public void Solve() {
+    int level = 1;
+    int cost;
+    while(notSolution(this.matrix)) {
+
+      printInfo(this.matrix);
+      System.out.println();
+
+      int[][] initialMatrix = copyMatrix(this.matrix);
+      String[] possibleMoves = getPossibleMoves();
+  
+      for (int i = 0; i < possibleMoves.length; i++) {
+        move(possibleMoves[i]);
+        cost = countCost(this.matrix, level);
+        antrian.add(new Node(this.matrix, level, cost, possibleMoves[i]));
+        this.matrix = copyMatrix(initialMatrix);
+      }
+
+      Node nextMove = antrian.poll();
+      level += 1;
+      moves.add(nextMove.move);
+      this.matrix = copyMatrix(nextMove.matrix);
+    }
+
+    printInfo(this.matrix);
+    System.out.println();
+
+    System.out.println("Moves to reach solution: " + moves);
+  }
+
 }
+ 
