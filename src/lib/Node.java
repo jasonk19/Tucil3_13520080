@@ -1,3 +1,5 @@
+package lib;
+
 public class Node {
   public int[][] matrix;
   public int[][] parent;

@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
+import lib.*;
+
 public class Main {
   public static int size = 0;
 
