@@ -30,7 +30,7 @@ public class Solver {
   public int getEmptyRow() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == 0) {
+        if (Elmt(i, j) == 16) {
           return i;
         }
       }
@@ -41,7 +41,7 @@ public class Solver {
   public int getEmptyCol() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == 0) {
+        if (Elmt(i, j) == 16) {
           return j;
         }
       }
@@ -52,7 +52,7 @@ public class Solver {
   public void printInfo(int[][] matrix) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (matrix[i][j] == 0) {
+        if (matrix[i][j] == 16) {
           System.out.print("   ");
         } else if (matrix[i][j] < 10) {
           System.out.print(" " + matrix[i][j] + " ");
@@ -80,7 +80,7 @@ public class Solver {
   public int valueOfX() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == 0) {
+        if (Elmt(i, j) == 16) {
           if ((i+1) % 2 == 1) {
             if ((j+1) % 2 == 0) {
               return 1;
@@ -121,9 +121,6 @@ public class Solver {
     int[] list = convertToOneD(matrix);
     for (int i = position; i < list.length; i++) {
       int temp = list[i];
-      if (temp == 0) {
-        temp = 16;
-      }
       if (temp < x) {
         count++;
       }
@@ -139,9 +136,6 @@ public class Solver {
     for (int row = 0; row < size; row++) {
       for (int col = 0; col < size; col++) {
         int temp = Elmt(row, col);
-        if (temp == 0) {
-          temp = 16;
-        }
         count = KURANG(temp, position);
         position += 1;
         sum += count;
@@ -262,7 +256,7 @@ public class Solver {
     int count = 0;
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (inputMat[i][j] != -1) {
+        if (inputMat[i][j] != 16) {
           if (inputMat[i][j] != this.solution[i][j]) {
             count++;
           }
