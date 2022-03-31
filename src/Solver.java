@@ -322,14 +322,15 @@ public class Solver {
         move(possibleMoves[i]);
         if (!returnTheSame(firstMove, possibleMoves[i])) {
           cost = countCost(this.matrix, level);
-          System.out.println("Cost: " + cost + "; Move: " + possibleMoves[i]);
+          // System.out.println("Cost: " + cost + "; Move: " + possibleMoves[i]);
           antrian.add(new Node(this.matrix, initialMatrix, level, cost, possibleMoves[i]));
         }
         this.matrix = copyMatrix(initialMatrix);
       }
       Node nextMove = antrian.poll();
-      System.out.println("Cost: " + nextMove.cost);
-      System.out.println("Level: " + nextMove.level);
+      // System.out.println("Cost: " + nextMove.cost);
+      // System.out.println("Level: " + nextMove.level);
+      firstMove = nextMove.move;
 
       if (nextMove.level < level || nextMove.level > level) {
         level = nextMove.level;
@@ -367,7 +368,7 @@ public class Solver {
       printInfo(path.get(i).matrix);
       moves.add(path.get(i).move);
       System.out.println("Move: " + path.get(i).move);
-      System.out.println("Level: " + path.get(i).level);
+      // System.out.println("Level: " + path.get(i).level);
       System.out.println();
     }
 
