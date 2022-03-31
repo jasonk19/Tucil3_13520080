@@ -7,6 +7,7 @@ import lib.*;
 
 public class Main {
   public static int size = 0;
+  private static boolean solvable;
 
   public static int[][] readMatrix(String filename) throws IOException {
     int[][] matrix = null;
@@ -61,10 +62,15 @@ public class Main {
     if (puzzle.isGoalReachable()) {
       // Print the Solution
       System.out.println("Puzzle tersebut memiliki solusi");
-      puzzle.Solve();
+      solvable = true;
     } else {
       // No Solution
       System.out.println("Puzzle tersebut tidak memiliki solusi");
+      solvable = false;
+    }
+
+    if (solvable) {
+      puzzle.Solve();
     }
   }
 }

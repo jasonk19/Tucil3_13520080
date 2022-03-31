@@ -10,8 +10,9 @@ public class Solver {
   private int size;
   private static PriorityQueue<Node> antrian = new PriorityQueue<Node>(new NodeComparator());
   private static List<Node> solutions = new ArrayList<Node>();
-  private static List<Node> path = new ArrayList<Node>();
-  private static List<String> moves = new ArrayList<String>();
+  public static long execTime;
+  public static List<Node> path = new ArrayList<Node>();
+  public static List<String> moves = new ArrayList<String>();
 
   public Solver(int[][] matrix, int[][] solution, int size) {
     this.matrix = matrix;
@@ -350,6 +351,8 @@ public class Solver {
       System.out.println("Move: " + path.get(i).move);
       System.out.println();
     }
+
+    execTime = stopTime - startTime;
 
     System.out.println("Moves to reach solution: " + moves);
 
