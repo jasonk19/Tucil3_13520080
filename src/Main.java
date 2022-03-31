@@ -52,6 +52,10 @@ public class Main {
 
     Solver puzzle = new Solver(matrix, solution, size);
 
+    System.out.println("Initial Puzzle Position");
+    puzzle.printInfo(matrix);
+    System.out.println();
+
     if (puzzle.isGoalReachable()) {
       // Print the Solution
       System.out.println("Puzzle tersebut memiliki solusi");

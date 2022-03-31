@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -7,7 +8,10 @@ public class Solver {
   private int[][] solution;
   private int size;
   private static PriorityQueue<Node> antrian = new PriorityQueue<Node>(new NodeComparator());
+  private static List<Node> solutions = new ArrayList<Node>();
+  private static List<Node> path = new ArrayList<Node>();
   private static List<String> moves = new ArrayList<String>();
+  private static List<int[][]> puzzleView = new ArrayList<int[][]>();
 
   public Solver(int[][] matrix, int[][] solution, int size) {
     this.matrix = matrix;
@@ -26,7 +30,7 @@ public class Solver {
   public int getEmptyRow() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == -1) {
+        if (Elmt(i, j) == 0) {
           return i;
         }
       }
@@ -37,7 +41,7 @@ public class Solver {
   public int getEmptyCol() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == -1) {
+        if (Elmt(i, j) == 0) {
           return j;
         }
       }
@@ -48,8 +52,10 @@ public class Solver {
   public void printInfo(int[][] matrix) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (matrix[i][j] == -1) {
-          System.out.print("  ");
+        if (matrix[i][j] == 0) {
+          System.out.print("   ");
+        } else if (matrix[i][j] < 10) {
+          System.out.print(" " + matrix[i][j] + " ");
         } else {
           System.out.print(matrix[i][j] + " ");
         }
@@ -74,7 +80,7 @@ public class Solver {
   public int valueOfX() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) == -1) {
+        if (Elmt(i, j) == 0) {
           if ((i+1) % 2 == 1) {
             if ((j+1) % 2 == 0) {
               return 1;
@@ -115,7 +121,7 @@ public class Solver {
     int[] list = convertToOneD(matrix);
     for (int i = position; i < list.length; i++) {
       int temp = list[i];
-      if (temp == -1) {
+      if (temp == 0) {
         temp = 16;
       }
       if (temp < x) {
@@ -133,7 +139,7 @@ public class Solver {
     for (int row = 0; row < size; row++) {
       for (int col = 0; col < size; col++) {
         int temp = Elmt(row, col);
-        if (temp == -1) {
+        if (temp == 0) {
           temp = 16;
         }
         count = KURANG(temp, position);
@@ -277,34 +283,119 @@ public class Solver {
     return false;
   }
 
+  public boolean isSame(int[][] matrix, int[][] initialMatrix) {
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (matrix[i][j] != initialMatrix[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public boolean returnTheSame(String first, String second) {
+    if (first == "left" && second == "right") {
+      return true;
+    } else if (first == "right" && second == "left") {
+      return true;
+    } else if (first == "down" && second == "up") {
+      return true;
+    } else if (first == "up" && second == "down") {
+      return true;
+    } 
+    return false;
+  }
 
   // Main Solving Method
   public void Solve() {
     int level = 1;
     int cost;
+    String firstMove = "null";
+
     while(notSolution(this.matrix)) {
-
-      printInfo(this.matrix);
-      System.out.println();
-
       int[][] initialMatrix = copyMatrix(this.matrix);
       String[] possibleMoves = getPossibleMoves();
-  
+
       for (int i = 0; i < possibleMoves.length; i++) {
         move(possibleMoves[i]);
-        cost = countCost(this.matrix, level);
-        antrian.add(new Node(this.matrix, level, cost, possibleMoves[i]));
+        if (!returnTheSame(firstMove, possibleMoves[i])) {
+          cost = countCost(this.matrix, level);
+          System.out.println("Cost: " + cost + "; Move: " + possibleMoves[i]);
+          antrian.add(new Node(this.matrix, initialMatrix, level, cost, possibleMoves[i]));
+        }
         this.matrix = copyMatrix(initialMatrix);
       }
-
       Node nextMove = antrian.poll();
+      System.out.println("Cost: " + nextMove.cost);
+      System.out.println("Level: " + nextMove.level);
+
+      if (nextMove.level < level || nextMove.level > level) {
+        level = nextMove.level;
+      }
+
       level += 1;
-      moves.add(nextMove.move);
+      
+      // if (!solutions.contains(nextMove)) {
+      //   solutions.add(nextMove);
+      // }
+
+      solutions.add(nextMove);
+
       this.matrix = copyMatrix(nextMove.matrix);
+
+      if (!notSolution(nextMove.matrix)) {
+        path.add(nextMove);
+      }
     }
 
-    printInfo(this.matrix);
-    System.out.println();
+    for (int i = solutions.size() - 1; i >= 0; i--) {
+      if (isSame(solutions.get(i).matrix, path.get(path.size() - 1).parent)) {
+        path.add(solutions.get(i));
+      }
+    }
+
+    // while (!isSame(path.get(0).matrix, solution)) {
+    //   Node value = path.remove(0);
+
+    //   path.add(value);
+    // }
+
+    for (int i = path.size() - 1; i >= 0; i--) {
+      printInfo(path.get(i).matrix);
+      moves.add(path.get(i).move);
+      System.out.println("Move: " + path.get(i).move);
+      System.out.println("Level: " + path.get(i).level);
+      System.out.println();
+    }
+
+    // for (int i = solutions.size() - 1; i >= 0; i--) {
+    //   if (isSame(solutions.get(i).matrix, path.get(path.size() - 1).parent)) {
+    //     path.add(solutions.get(i));
+    //   }
+    // }
+
+    // for (int i = 0; i < path.size() - 1; i++) {
+    //   for (int j = i; j < path.size(); j++) {
+    //     if (path.get(j).level < path.get(i).level) {
+    //       Node temp = path.get(i);
+    //       path.set(i, path.get(j));
+    //       path.set(j, temp);
+    //     }
+    //   }
+    // }
+
+    // for (int i = 0; i < path.size(); i++) {
+    //   moves.add(path.get(i).move);
+    //   puzzleView.add(path.get(i).matrix);
+    // }
+
+    // System.out.println("Solutions: ");
+    // for (int i = 0; i < puzzleView.size(); i++) {
+    //   printInfo(puzzleView.get(i));
+    //   System.out.println("Level: " + path.get(i).level);;
+    //   System.out.println();
+    // }
 
     System.out.println("Moves to reach solution: " + moves);
   }
