@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -312,7 +313,7 @@ public class Solver {
     int level = 1;
     int cost;
     String firstMove = "null";
-
+    long startTime = System.currentTimeMillis();
     while(notSolution(this.matrix)) {
       int[][] initialMatrix = copyMatrix(this.matrix);
       String[] possibleMoves = getPossibleMoves();
@@ -348,6 +349,7 @@ public class Solver {
         path.add(nextMove);
       }
     }
+    long stopTime = System.currentTimeMillis();
 
     for (int i = solutions.size() - 1; i >= 0; i--) {
       if (isSame(solutions.get(i).matrix, path.get(path.size() - 1).parent)) {
@@ -398,6 +400,8 @@ public class Solver {
     // }
 
     System.out.println("Moves to reach solution: " + moves);
+
+    System.out.println("Execution Time: " + (stopTime - startTime) + "ms");
   }
 
 }
