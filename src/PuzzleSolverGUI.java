@@ -22,6 +22,7 @@ public class PuzzleSolverGUI extends JFrame {
     private JPanel outputPanel;
     private JLabel puzzleStatus;
     private JLabel puzzleView;
+    private JLabel moveLabel;
     private Timer timer;
     private int iter;
 
@@ -31,6 +32,7 @@ public class PuzzleSolverGUI extends JFrame {
         this.titleLabel.setFont(new Font("Monospace", Font.PLAIN, 28));
         this.puzzleView.setFont(new Font("Monospace", Font.PLAIN, 30));
         this.puzzleStatus.setFont(new Font("Monospace", Font.PLAIN, 18));
+        this.moveLabel.setFont(new Font("Monospace", Font.BOLD, 16));
         this.SOLVEButton.setEnabled(false);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,6 +103,7 @@ public class PuzzleSolverGUI extends JFrame {
                     timer.stop();
                 }
                 puzzleView.setText(printMatrixToString(puzzle.path.get(iter).matrix));
+                moveLabel.setText(puzzle.path.get(iter).move);
                 iter--;
             }
         });

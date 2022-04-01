@@ -38,13 +38,8 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    Scanner input = new Scanner(System.in);
-
     int[][] matrix = null;
     int[][] solution = null;
-    
-    // System.out.print("Enter puzzle file name to test (*.txt): ");
-    // String filename = input.nextLine();
 
     try {
       matrix = readMatrix("../test/test.txt");
