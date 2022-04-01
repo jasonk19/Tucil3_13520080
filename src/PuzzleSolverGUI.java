@@ -54,8 +54,8 @@ public class PuzzleSolverGUI extends JFrame {
 
                 // Membaca matrix dan solusi
                 try {
-                    matrix = readMatrix("./test/" + fileName);
-                    solution = readMatrix("./src/solution.txt");
+                    matrix = readMatrix("../test/" + fileName);
+                    solution = readMatrix("solution.txt");
                 } catch (IOException err) {
                     System.out.println("Error: " + err.getMessage());
                 }
