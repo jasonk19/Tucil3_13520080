@@ -58,8 +58,9 @@ public class PuzzleSolverGUI extends JFrame {
 
                 puzzle = new Solver(matrix, solution, size);
 
-                puzzle.path.clear();
-                puzzle.moves.clear();
+                Solver.path.clear();
+                Solver.moves.clear();
+                moveLabel.setText("");
 
                 if (puzzle.isGoalReachable()) {
                     puzzleStatus.setText("Puzzle memiliki solusi");
@@ -86,13 +87,14 @@ public class PuzzleSolverGUI extends JFrame {
 
                 puzzle.Solve();
 
-                String executionTime = Long.toString(puzzle.execTime);
-                puzzleStatus.setText("Execution Time: " + executionTime);
+                String executionTime = Long.toString(Solver.execTime);
+                puzzleStatus.setText("Execution Time: " + executionTime +"ms");
 
-                iter = puzzle.path.size() - 1;
+                iter = Solver.path.size() - 1;
 
                 timer.start();
 
+                SOLVEButton.setEnabled(false);
             }
         });
 
@@ -102,8 +104,8 @@ public class PuzzleSolverGUI extends JFrame {
                 if (iter == 0) {
                     timer.stop();
                 }
-                puzzleView.setText(printMatrixToString(puzzle.path.get(iter).matrix));
-                moveLabel.setText(puzzle.path.get(iter).move);
+                puzzleView.setText(printMatrixToString(Solver.path.get(iter).matrix));
+                moveLabel.setText(Solver.path.get(iter).move);
                 iter--;
             }
         });
