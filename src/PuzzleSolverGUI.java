@@ -23,6 +23,7 @@ public class PuzzleSolverGUI extends JFrame {
     private JLabel puzzleStatus;
     private JLabel puzzleView;
     private JLabel moveLabel;
+    private JLabel verticesRaised;
     private final Timer timer;
     private int iter;
 
@@ -48,6 +49,10 @@ public class PuzzleSolverGUI extends JFrame {
                 String initialPuzzle;
                 matrix = null;
                 solution = null;
+                Solver.antrian.clear();
+                Solver.path.clear();
+                Solver.solutions.clear();
+
 
                 // Mengambil text dari input field sebagai fileName
                 String fileName = inputField.getText();
@@ -63,8 +68,8 @@ public class PuzzleSolverGUI extends JFrame {
                 // inisialisasi Solver
                 puzzle = new Solver(matrix, solution, size);
 
-                Solver.path.clear();
                 moveLabel.setText("");
+                verticesRaised.setText("");
 
                 // Memeriksa jika puzzle dapat mencapai goal atau tidak
                 if (puzzle.isGoalReachable()) {
@@ -96,6 +101,7 @@ public class PuzzleSolverGUI extends JFrame {
                 puzzle.Solve();
 
                 String executionTime = Long.toString(Solver.execTime);
+                verticesRaised.setText("Vertices Raised: " + Solver.solutions.size());
                 puzzleStatus.setText("Execution Time: " + executionTime +"ms");
 
                 iter = Solver.path.size() - 1;

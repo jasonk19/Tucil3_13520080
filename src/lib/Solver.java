@@ -13,9 +13,9 @@ public class Solver {
   // variable size sebagai ukuran matrix (4x4)
   private int size;
   // antrian sebagai prioqueue berdasarkan cost dari Node
-  private static PriorityQueue<Node> antrian = new PriorityQueue<Node>(new NodeComparator());
+  public static PriorityQueue<Node> antrian = new PriorityQueue<Node>(new NodeComparator());
   // List of solutions dari hasil pop prioqueue
-  private static List<Node> solutions = new ArrayList<Node>();
+  public static List<Node> solutions = new ArrayList<Node>();
   // variable execution time
   public static long execTime;
   // List of path berupa jalur dari matrix awal ke goal
