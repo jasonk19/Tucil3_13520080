@@ -97,7 +97,7 @@ public class PuzzleSolverGUI extends JFrame {
             }
         });
 
-        timer = new Timer(800, new ActionListener() {
+        timer = new Timer(900, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (iter == 0) {
