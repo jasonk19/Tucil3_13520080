@@ -12,7 +12,6 @@ public class Solver {
   private static List<Node> solutions = new ArrayList<Node>();
   public static long execTime;
   public static List<Node> path = new ArrayList<Node>();
-  public static List<String> moves = new ArrayList<String>();
 
   public Solver(int[][] matrix, int[][] solution, int size) {
     this.matrix = matrix;
@@ -63,19 +62,6 @@ public class Solver {
       }
       System.out.println();
     }
-  }
-
-  public void printMoves() {
-    String[] moves = getPossibleMoves();
-    System.out.print("[");
-    for (int i = 0; i < moves.length; i++) {
-      System.out.print(moves[i]);
-      if (i != moves.length - 1) {
-        System.out.print(", ");
-      }
-    }
-    System.out.print("]");
-    System.out.println();
   }
 
   public int valueOfX() {
@@ -345,18 +331,8 @@ public class Solver {
       }
     }
 
-    for (int i = path.size() - 1; i >= 0; i--) {
-      printInfo(path.get(i).matrix);
-      moves.add(path.get(i).move);
-      System.out.println("Move: " + path.get(i).move);
-      System.out.println();
-    }
-
     execTime = stopTime - startTime;
 
-    System.out.println("Moves to reach solution: " + moves);
-
-    System.out.println("Execution Time: " + (stopTime - startTime) + "ms");
   }
 
 }

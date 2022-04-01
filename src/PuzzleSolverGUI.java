@@ -23,7 +23,7 @@ public class PuzzleSolverGUI extends JFrame {
     private JLabel puzzleStatus;
     private JLabel puzzleView;
     private JLabel moveLabel;
-    private Timer timer;
+    private final Timer timer;
     private int iter;
 
     public PuzzleSolverGUI(String title) {
@@ -59,7 +59,6 @@ public class PuzzleSolverGUI extends JFrame {
                 puzzle = new Solver(matrix, solution, size);
 
                 Solver.path.clear();
-                Solver.moves.clear();
                 moveLabel.setText("");
 
                 if (puzzle.isGoalReachable()) {
@@ -98,7 +97,7 @@ public class PuzzleSolverGUI extends JFrame {
             }
         });
 
-        timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(800, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (iter == 0) {
