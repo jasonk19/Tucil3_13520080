@@ -26,7 +26,7 @@ java PuzzleSolverGUI
 ![image](https://user-images.githubusercontent.com/69589003/161287953-07fb71cf-a74e-434b-b213-e7198dbba986.png)
 6. Lalu tekan **CHECK PUZZLE** untuk memeriksa puzzle dan tekan **SOLVE** untuk menyelesaikan puzzle
 > Menekan Button **CHECK PUZZLE** <br/>
-![image](https://user-images.githubusercontent.com/69589003/161288147-eb1f1ae5-420e-4c30-a181-72d3d003ff31.png)
+![image](https://user-images.githubusercontent.com/69589003/161288147-eb1f1ae5-420e-4c30-a181-72d3d003ff31.png) <br/>
 > Menekan Button **SOLVE** <br/>
 ![image](https://user-images.githubusercontent.com/69589003/161288305-0276a9dd-b926-4121-8ee6-1de77e7a6ab3.png)
 7. Jika ingin mengganti file, tinggal menulis kembali file name dan ulangi langkah 6
