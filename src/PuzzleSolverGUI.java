@@ -40,15 +40,19 @@ public class PuzzleSolverGUI extends JFrame {
         this.setSize(420, 420);
         this.setResizable(false);
 
+        // Action saat menekan tombol VIEWPUZZLE
         VIEWPUZZLEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // inisialisasi String, matrix, dan matrix solusi/goal
                 String initialPuzzle;
                 matrix = null;
                 solution = null;
 
+                // Mengambil text dari input field sebagai fileName
                 String fileName = inputField.getText();
 
+                // Membaca matrix dan solusi
                 try {
                     matrix = readMatrix("./test/" + fileName);
                     solution = readMatrix("./src/solution.txt");
@@ -56,11 +60,13 @@ public class PuzzleSolverGUI extends JFrame {
                     System.out.println("Error: " + err.getMessage());
                 }
 
+                // inisialisasi Solver
                 puzzle = new Solver(matrix, solution, size);
 
                 Solver.path.clear();
                 moveLabel.setText("");
 
+                // Memeriksa jika puzzle dapat mencapai goal atau tidak
                 if (puzzle.isGoalReachable()) {
                     puzzleStatus.setText("Puzzle memiliki solusi");
                     solvable = true;
@@ -69,6 +75,7 @@ public class PuzzleSolverGUI extends JFrame {
                     solvable = false;
                 }
 
+                // Jika solvable, maka SOLVEButton dapat ditekan dan puzzle awal ditunjukkan
                 if (solvable) {
                     initialPuzzle = printMatrixToString(matrix);
                     puzzleView.setText(initialPuzzle);
@@ -78,12 +85,14 @@ public class PuzzleSolverGUI extends JFrame {
             }
         });
 
+        // Action saat menekan SOLVEButton
         SOLVEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 puzzleStatus.setText("Calculating...");
 
+                // jalankan method solve puzzle
                 puzzle.Solve();
 
                 String executionTime = Long.toString(Solver.execTime);
@@ -103,13 +112,14 @@ public class PuzzleSolverGUI extends JFrame {
                 if (iter == 0) {
                     timer.stop();
                 }
+                // menampilkan puzzle dengan delay
                 puzzleView.setText(printMatrixToString(Solver.path.get(iter).matrix));
                 moveLabel.setText(Solver.path.get(iter).move);
                 iter--;
             }
         });
     }
-
+    // Fungsi untuk membaca matrix dari suatu file
     public static int[][] readMatrix(String filename) throws IOException {
         int[][] matrix = null;
 
@@ -137,7 +147,7 @@ public class PuzzleSolverGUI extends JFrame {
 
         return matrix;
     }
-
+    // Fungsi untuk mengubah suatu matrix menjadi string yang dapat ditampilkan di GUI
     public String printMatrixToString(int[][] matrix) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");

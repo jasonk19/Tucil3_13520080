@@ -4,29 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+// Class Solver sebagai class utama untuk mencari solusi
 public class Solver {
+  // variable matrix untuk menyimpan matrix yang dites
   private int[][] matrix;
+  // variable solution untuk menyimpan matrix keadaan terakhir (goal dari puzzle)
   private int[][] solution;
+  // variable size sebagai ukuran matrix (4x4)
   private int size;
+  // antrian sebagai prioqueue berdasarkan cost dari Node
   private static PriorityQueue<Node> antrian = new PriorityQueue<Node>(new NodeComparator());
+  // List of solutions dari hasil pop prioqueue
   private static List<Node> solutions = new ArrayList<Node>();
+  // variable execution time
   public static long execTime;
+  // List of path berupa jalur dari matrix awal ke goal
   public static List<Node> path = new ArrayList<Node>();
 
+  // Constructor dari Solver
   public Solver(int[][] matrix, int[][] solution, int size) {
     this.matrix = matrix;
     this.solution = solution;
     this.size = size;
   }
 
+  // Get elemen matrix
   public int Elmt(int i, int j) {
     return this.matrix[i][j];
   }
 
+  // Get elemen solusi
   public int Sol(int i, int j) {
     return this.solution[i][j];
   }
 
+  // get index row dari elemen empty
   public int getEmptyRow() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -38,6 +50,7 @@ public class Solver {
     return -999;
   }
 
+  // get index column dari elemen empty
   public int getEmptyCol() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -49,6 +62,7 @@ public class Solver {
     return -999;
   }
 
+  // print matrix ke console/terminal
   public void printInfo(int[][] matrix) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -64,6 +78,9 @@ public class Solver {
     }
   }
 
+  // menentukan value dari x
+  // jika sel kosong di posisi yang diarsir, maka x = 1;
+  // else x = 0;
   public int valueOfX() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -87,6 +104,7 @@ public class Solver {
     return -999;
   }
 
+  // mengubah matrix menjadi array 1 dimensi
   public int[] convertToOneD(int[][] matrix) {
     List<Integer> list = new ArrayList<Integer>();
     for (int i = 0; i < size; i++) {
@@ -103,6 +121,8 @@ public class Solver {
     return oneDArray;
   }
 
+  // kalkulasi value dari kurang,
+  // yaitu banyaknya ubin yang valuenya kurang dari ubin acuan
   public int KURANG(int x, int position) {
     int count = 0;
     int[] list = convertToOneD(matrix);
@@ -115,7 +135,8 @@ public class Solver {
 
     return count;
   }
- 
+
+  // mencari hasil dari sumOf(KURANG)
   public int valueOfKurang() {
     int sum = 0;
     int count = 0;
@@ -132,6 +153,9 @@ public class Solver {
     return sum;
   }
 
+  // Menentukan apakah puzzle dapat mencapai goal atau tidak
+  // - jika KURANG + x bernilai genap maka reachable
+  // - else tidak reachable
   public boolean isGoalReachable() {
     // isGoalReachable menggunakan rumus KURANG(i) + X;
     
@@ -143,6 +167,7 @@ public class Solver {
     return (kurang + x) % 2 == 0;
   }
 
+  // get kemungkinan moves yang dapat dilakukan oleh sel kosong berdasarkan posisinya
   public String[] getPossibleMoves() {
     List<String> list = new ArrayList<String>();
     String up = "up";
@@ -195,19 +220,7 @@ public class Solver {
     return arrayOfMoves;
   }
 
-  public int notInPositionCount() {
-    int count = 0;
-    for (int i = 0; i < size; i++) {
-      for (int j = 0; j < size; j++) {
-        if (Elmt(i, j) != Sol(i, j)) {
-          count++;
-        }
-      }
-    }
-
-    return count;
-  }
-
+  // mengassign suatu matrix dengan matrix lain
   public int[][] copyMatrix(int[][] inputMat) {
     int[][] newMatrix = new int[size][size];
     for (int i = 0; i < size; i++) {
@@ -219,12 +232,14 @@ public class Solver {
     return newMatrix;
   }
 
+  // untuk melakukan swapping antara sel kosong dan sel sekitarnya berdasarkan move
   public void swapEmpty(int rowSrc, int colSrc, int rowDest, int colDest) {
     int temp = this.matrix[rowSrc][colSrc];
     this.matrix[rowSrc][colSrc] = this.matrix[rowDest][colDest];
     this.matrix[rowDest][colDest] = temp;
   }
 
+  // command move untuk menggerakkan sel kosong
   public void move(String command) {
     int rowEmpty = getEmptyRow();
     int colEmpty = getEmptyCol();
@@ -239,6 +254,7 @@ public class Solver {
     }
   }
 
+  // perhitungan cost suatu puzzle
   public int countCost(int[][] inputMat, int depth) {
     int count = 0;
     for (int i = 0; i < size; i++) {
@@ -253,6 +269,9 @@ public class Solver {
     return count + depth;
   }
 
+  // melakukan pengecekan puzzle dengan solusi/goal
+  // - jika ada elemen yang tidak sama, maka notSolution mengembalikan true
+  // - jika semua elemen sama, maka matrix tersebut adalah solution
   public boolean notSolution(int[][] matrix) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -264,6 +283,8 @@ public class Solver {
     return false;
   }
 
+  // memeriksa apakah kedua matrix yang dibandingkan sama
+  // jika sama maka true, else false
   public boolean isSame(int[][] matrix, int[][] initialMatrix) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -275,6 +296,9 @@ public class Solver {
     return true;
   }
 
+  // mengembalikan true atau false berdasarkan masukkan command move
+  // agar puzzle yang akan diekspansi tidak melakukan move yang akan mengembalikan dia
+  // ke posisi semula
   public boolean returnTheSame(String first, String second) {
     if (first == "left" && second == "right") {
       return true;
@@ -294,6 +318,7 @@ public class Solver {
     int cost;
     String firstMove = "null";
     long startTime = System.currentTimeMillis();
+    // while matrix tidak sama dengan solusi/goal, loop
     while(notSolution(this.matrix)) {
       int[][] initialMatrix = copyMatrix(this.matrix);
       String[] possibleMoves = getPossibleMoves();
@@ -302,10 +327,12 @@ public class Solver {
         move(possibleMoves[i]);
         if (!returnTheSame(firstMove, possibleMoves[i])) {
           cost = countCost(this.matrix, level);
+          // Memasukkan Node puzzle ke antrian
           antrian.add(new Node(this.matrix, initialMatrix, level, cost, possibleMoves[i]));
         }
         this.matrix = copyMatrix(initialMatrix);
       }
+      // Mengambil Node puzzle pertama pada prioqueue
       Node nextMove = antrian.poll();
       firstMove = nextMove.move;
 
@@ -314,23 +341,25 @@ public class Solver {
       }
 
       level += 1;
-      
+      // Memasukkan Node puzzle yang menjadi move berikutnya ke list of solusi
       solutions.add(nextMove);
 
       this.matrix = copyMatrix(nextMove.matrix);
 
+      // jika puzzle nextMove berupa solusi, maka dimasukkan ke path
       if (!notSolution(nextMove.matrix)) {
         path.add(nextMove);
       }
     }
     long stopTime = System.currentTimeMillis();
 
+    // pencarian jalur dengan menghubungkan puzzle dengan parent dari elemen terakhir path
     for (int i = solutions.size() - 1; i >= 0; i--) {
       if (isSame(solutions.get(i).matrix, path.get(path.size() - 1).parent)) {
         path.add(solutions.get(i));
       }
     }
-
+    // perhitungan ekesekusi waktu
     execTime = stopTime - startTime;
 
   }
