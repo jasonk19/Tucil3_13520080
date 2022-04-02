@@ -105,21 +105,28 @@ public class PuzzleSolverGUI extends JFrame {
 
                 executionTime = Long.toString(Solver.execTime);
 
-                iter = Solver.path.size() - 1;
+                if (Solver.path.size() == 0) {
+                    verticesRaised.setText("Vertices Raised: " + 0);
+                    puzzleStatus.setText("<html>Steps taken: " + 0 + " steps<br/>Execution Time: " + executionTime + "ms</html>");
+                    puzzleView.setText(printMatrixToString(matrix));
+                    moveLabel.setText("none");
+                } else {
+                    iter = Solver.path.size() - 1;
+                    timer.start();
+                }
 
-                timer.start();
 
                 SOLVEButton.setEnabled(false);
             }
         });
 
-        timer = new Timer(900, new ActionListener() {
+        timer = new Timer(800, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (iter == 0) {
                     timer.stop();
                     verticesRaised.setText("Vertices Raised: " + Solver.solutions.size());
-                    puzzleStatus.setText("<html>Steps taken:  " + Solver.path.size() + " steps<br/>Execution Time: " + executionTime + "ms</html>");
+                    puzzleStatus.setText("<html>Steps taken: " + Solver.path.size() + " steps<br/>Execution Time: " + executionTime + "ms</html>");
                 }
                 // menampilkan puzzle dengan delay
                 puzzleView.setText(printMatrixToString(Solver.path.get(iter).matrix));

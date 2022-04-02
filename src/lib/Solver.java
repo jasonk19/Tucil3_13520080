@@ -243,13 +243,13 @@ public class Solver {
   public void move(String command) {
     int rowEmpty = getEmptyRow();
     int colEmpty = getEmptyCol();
-    if (command == "up") {
+    if (command.equals("up")) {
       swapEmpty(rowEmpty, colEmpty, rowEmpty - 1, colEmpty);
-    } else if (command == "down") {
+    } else if (command.equals("down")) {
       swapEmpty(rowEmpty, colEmpty, rowEmpty + 1, colEmpty);
-    } else if (command == "right") {
+    } else if (command.equals("right")) {
       swapEmpty(rowEmpty, colEmpty, rowEmpty, colEmpty + 1);
-    } else if (command == "left") {
+    } else if (command.equals("left")) {
       swapEmpty(rowEmpty, colEmpty, rowEmpty, colEmpty - 1);
     }
   }
@@ -316,8 +316,16 @@ public class Solver {
   public void Solve() {
     int level = 1;
     int cost;
-    String firstMove = "null";
+    String firstMove = "none";
     long startTime = System.currentTimeMillis();
+
+    // Jika puzzle sudah solusi, maka langsung return;
+    if (!notSolution(this.matrix)) {
+      long stopTime = System.currentTimeMillis();
+      execTime = stopTime - startTime;
+      return;
+    }
+
     // while matrix tidak sama dengan solusi/goal, loop
     while(notSolution(this.matrix)) {
       int[][] initialMatrix = copyMatrix(this.matrix);
