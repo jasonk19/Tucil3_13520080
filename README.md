@@ -28,7 +28,7 @@ java PuzzleSolverGUI
 > Menekan Button **CHECK PUZZLE** <br/>
 ![image](https://user-images.githubusercontent.com/69589003/161288147-eb1f1ae5-420e-4c30-a181-72d3d003ff31.png) <br/>
 > Menekan Button **SOLVE** <br/>
-![image](https://user-images.githubusercontent.com/69589003/161288305-0276a9dd-b926-4121-8ee6-1de77e7a6ab3.png)
+![image](https://user-images.githubusercontent.com/69589003/161388705-2e86739f-277d-4d2c-8b33-b29846b41094.png)
 7. Jika ingin mengganti file, tinggal menulis kembali file name dan ulangi langkah 6
 
 > ****Catatan**: Harap menggunakan testcase puzzle yang tidak terlalu rumit/kompleks, jika terlalu kompleks, program dapat berjalan terlalu lama dan mengakibatkan **not responding** (tergantung spek pc masing - masing)*

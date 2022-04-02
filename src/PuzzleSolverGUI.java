@@ -26,19 +26,22 @@ public class PuzzleSolverGUI extends JFrame {
     private JLabel verticesRaised;
     private final Timer timer;
     private int iter;
+    private String executionTime;
 
     public PuzzleSolverGUI(String title) {
         super(title);
 
-        this.titleLabel.setFont(new Font("Monospace", Font.PLAIN, 28));
-        this.puzzleView.setFont(new Font("Monospace", Font.PLAIN, 30));
-        this.puzzleStatus.setFont(new Font("Monospace", Font.PLAIN, 18));
-        this.moveLabel.setFont(new Font("Monospace", Font.BOLD, 16));
+        this.titleLabel.setFont(new Font("SansSerif", Font.PLAIN, 28));
+        this.puzzleView.setFont(new Font("SansSerif", Font.PLAIN, 32));
+        this.puzzleStatus.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        this.moveLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        this.verticesRaised.setFont(new Font("SansSerif", Font.BOLD, 16));
+        this.inputField.setFont(new Font("SansSerif", Font.PLAIN, 18));
         this.SOLVEButton.setEnabled(false);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
-        this.setSize(420, 420);
+        this.setSize(420, 480);
         this.setResizable(false);
 
         // Action saat menekan tombol VIEWPUZZLE
@@ -100,9 +103,7 @@ public class PuzzleSolverGUI extends JFrame {
                 // jalankan method solve puzzle
                 puzzle.Solve();
 
-                String executionTime = Long.toString(Solver.execTime);
-                verticesRaised.setText("Vertices Raised: " + Solver.solutions.size());
-                puzzleStatus.setText("Execution Time: " + executionTime +"ms");
+                executionTime = Long.toString(Solver.execTime);
 
                 iter = Solver.path.size() - 1;
 
@@ -117,6 +118,8 @@ public class PuzzleSolverGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (iter == 0) {
                     timer.stop();
+                    verticesRaised.setText("Vertices Raised: " + Solver.solutions.size());
+                    puzzleStatus.setText("<html>Steps taken:  " + Solver.path.size() + " steps<br/>Execution Time: " + executionTime + "ms</html>");
                 }
                 // menampilkan puzzle dengan delay
                 puzzleView.setText(printMatrixToString(Solver.path.get(iter).matrix));
