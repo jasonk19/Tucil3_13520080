@@ -24,6 +24,7 @@ public class PuzzleSolverGUI extends JFrame {
     private JLabel puzzleView;
     private JLabel moveLabel;
     private JLabel verticesRaised;
+    private JLabel kurangxLabel;
     private final Timer timer;
     private int iter;
     private String executionTime;
@@ -32,17 +33,18 @@ public class PuzzleSolverGUI extends JFrame {
         super(title);
 
         this.titleLabel.setFont(new Font("SansSerif", Font.PLAIN, 28));
-        this.puzzleView.setFont(new Font("SansSerif", Font.PLAIN, 32));
+        this.puzzleView.setFont(new Font("SansSerif", Font.PLAIN, 40));
         this.puzzleStatus.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        this.moveLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        this.moveLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
         this.verticesRaised.setFont(new Font("SansSerif", Font.BOLD, 16));
         this.inputField.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        this.kurangxLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
         this.SOLVEButton.setEnabled(false);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
-        this.setSize(420, 480);
-        this.setResizable(false);
+        this.setSize(800, 640);
+
 
         // Action saat menekan tombol VIEWPUZZLE
         VIEWPUZZLEButton.addActionListener(new ActionListener() {
@@ -50,6 +52,7 @@ public class PuzzleSolverGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // inisialisasi String, matrix, dan matrix solusi/goal
                 String initialPuzzle;
+                String calculateKurang;
                 matrix = null;
                 solution = null;
                 Solver.antrian.clear();
@@ -83,9 +86,11 @@ public class PuzzleSolverGUI extends JFrame {
                     solvable = false;
                 }
 
-                // Menunjukkan puzzle awal
+                // Menunjukkan puzzle awal dan value dari kurang(i) + x
                 initialPuzzle = printMatrixToString(matrix);
+                calculateKurang = printKurang();
                 puzzleView.setText(initialPuzzle);
+                kurangxLabel.setText(calculateKurang);
 
                 // Jika solvable, maka SOLVEButton dapat ditekan
                 if (solvable) {
@@ -181,6 +186,28 @@ public class PuzzleSolverGUI extends JFrame {
             }
             sb.append("<br />");
         }
+        sb.append("</html>");
+
+        return sb.toString();
+    }
+
+    public String printKurang() {
+        StringBuilder sb = new StringBuilder();
+        int position = 0;
+        int count = 0;
+        int sum = 0;
+        int x = puzzle.valueOfX();
+        sb.append("<html>");
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                int temp = matrix[i][j];
+                count = puzzle.KURANG(temp, position);
+                sb.append("KURANG(" + temp + ") = " + count + "<br/>");
+                position += 1;
+                sum += count;
+            }
+        }
+        sb.append("Jumlah dari KURANG(i) + X = " + (sum + x));
         sb.append("</html>");
 
         return sb.toString();
