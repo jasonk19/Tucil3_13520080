@@ -83,10 +83,12 @@ public class PuzzleSolverGUI extends JFrame {
                     solvable = false;
                 }
 
-                // Jika solvable, maka SOLVEButton dapat ditekan dan puzzle awal ditunjukkan
+                // Menunjukkan puzzle awal
+                initialPuzzle = printMatrixToString(matrix);
+                puzzleView.setText(initialPuzzle);
+
+                // Jika solvable, maka SOLVEButton dapat ditekan
                 if (solvable) {
-                    initialPuzzle = printMatrixToString(matrix);
-                    puzzleView.setText(initialPuzzle);
                     SOLVEButton.setEnabled(true);
                 }
 
