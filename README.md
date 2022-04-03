@@ -22,7 +22,7 @@ java PuzzleSolverGUI
 > Tampilan Awal GUI <br/>
 ![image](https://user-images.githubusercontent.com/69589003/161418999-784e2be9-4803-48bc-b239-9c516f9ab3f2.png)
 5. Masukkan input pada input field yang terdapat di GUI (format: *.txt)
-> Input file <br/>
+> Input file (***File *.txt dimasukkan ke dalam folder test***) <br/>
 ![image](https://user-images.githubusercontent.com/69589003/161419050-90740d98-0cca-4cc4-bcca-9a768c74d6a3.png)
 6. Lalu tekan **CHECK PUZZLE** untuk memeriksa puzzle dan tekan **SOLVE** untuk menyelesaikan puzzle
 > Menekan Button **CHECK PUZZLE** <br/>
